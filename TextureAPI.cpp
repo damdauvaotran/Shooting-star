@@ -12,15 +12,15 @@ TextureAPI::TextureAPI() {
 TextureAPI::~TextureAPI() {
 }
 
-bool TextureAPI::loadFromFile(SDL_Renderer* renderer, std::string path) {
+bool TextureAPI::loadFromFile(SDL_Renderer* renderer, std::string path, Uint8 red, Uint8 green, Uint8 blue) {
 	free();
 	SDL_Texture *newTexture = NULL;
 	SDL_Surface *newSurface = IMG_Load(path.c_str());
 	if (newSurface == NULL) {
-		cout << "\nCould not init surface" << IMG_GetError;
+		cout << "\nCould not init surface; " << IMG_GetError;
 	}
 	else {
-		SDL_SetColorKey(newSurface, 1, SDL_MapRGB(newSurface->format, 0, 255, 255)); //Color key
+		SDL_SetColorKey(newSurface, 1, SDL_MapRGB(newSurface->format, red, green, blue)); //Color key
 		newTexture = SDL_CreateTextureFromSurface(renderer, newSurface);
 		if (newTexture == NULL) {
 			cout << "\nCould not create texture " << SDL_GetError;

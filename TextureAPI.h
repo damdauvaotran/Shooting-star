@@ -9,7 +9,7 @@ public:
 	TextureAPI();
 	~TextureAPI();
 
-	bool loadFromFile(SDL_Renderer* renderer, std::string path);
+	bool loadFromFile(SDL_Renderer* renderer, std::string path, Uint8 red = 255, Uint8 green = 255, Uint8 blue = 255);
 
 	void free();
 
@@ -20,7 +20,7 @@ public:
 	void setBlendMode(SDL_BlendMode blending);
 	//Set alpha modulation 
 	void setAlpha(Uint8 alpha);
-	//Viet chu de
+	//Load text
 	bool loadFromRenderedText(SDL_Renderer *renderer, std::string textureText, SDL_Color textColor, TTF_Font *gFont);
 
 	void render(SDL_Renderer*, int x, int y, SDL_Rect *clip = NULL, double angle = 0.0, SDL_Point* center = NULL, SDL_RendererFlip flip = SDL_FLIP_NONE);
