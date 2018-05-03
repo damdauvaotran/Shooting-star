@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -125,15 +125,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Character.cpp" />
-    <ClCompile Include="Screen.cpp" />
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="GlobalResource.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="TextureAPI.cpp" />
     <ClCompile Include="Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Bullet.h" />
     <ClInclude Include="Character.h" />
-    <ClInclude Include="Screen.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="GlobalResource.h" />
     <ClInclude Include="TextureAPI.h" />
     <ClInclude Include="Timer.h" />
   </ItemGroup>

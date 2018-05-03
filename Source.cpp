@@ -6,7 +6,8 @@
 #include "TextureAPI.h"
 #include "Timer.h"
 #include "Character.h"
-#include "Screen.h"
+#include "Enemy.h"
+#include "GlobalResource.h"
 
 using namespace std;
 
@@ -15,8 +16,8 @@ int main(int argc, char* argv[]) {
 	SDL_Window * window = NULL;
 	SDL_Renderer *renderer = NULL;
 	
-	const int SCREEN_WIDTH = Screen::SCREEN_WIDTH;
-	const int SCREEN_HEIGHT = Screen::SCREEN_HEIGHT;
+	const int SCREEN_WIDTH = GlobalResource::SCREEN_WIDTH;
+	const int SCREEN_HEIGHT = GlobalResource::SCREEN_HEIGHT;
 
 
 	
@@ -31,12 +32,12 @@ int main(int argc, char* argv[]) {
 			cout << "\nWarning: Linear texture filtering not enabled!";
 		}
 		else {
-			window = SDL_CreateWindow("nam dep trai", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH,SCREEN_HEIGHT, SDL_WINDOW_SHOWN);//Create window
+			window = SDL_CreateWindow("Shooting star", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH,SCREEN_HEIGHT, SDL_WINDOW_SHOWN);//Create window
 			if (window == NULL) {
 				cout << "\nCould no init window " << SDL_GetError();
 			}
 			else {
-				renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+				renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED| SDL_RENDERER_PRESENTVSYNC);
 				if (renderer == NULL) {
 					cout << "\nCould not init renderer"<<SDL_GetError();
 				}
@@ -65,6 +66,7 @@ int main(int argc, char* argv[]) {
 	
 	//Load music
 	Mix_Music *backgroundMusic = Mix_LoadMUS("Resource/Sound/shootingStar.mp3");
+	Mix_Chunk *fireSound = Mix_LoadWAV("Resource/Sound/shot.wav");
 
 	//Load background
 	TextureAPI background;
@@ -74,10 +76,34 @@ int main(int argc, char* argv[]) {
 	Character mainCharacter;
 	mainCharacter.loadFromFile(renderer);
 
+	//Load enemy
+	Enemy enemy (GlobalResource::MAIN_AREA_WIDTH/2, 100, 0,0);
+	enemy.loadFromFile(renderer);
+
+	//Load bullet
+
+	TextureAPI bullet;
+	bullet.loadFromFile(renderer, "Resource/Image/bullet.png");
+
+	
 
 	/*Main loop*/
 
 	int scrollingOffset = 0;//this make the screen scroll forever
+	Timer moveTimer;
+	Timer frameTimer;
+	Timer scrollingTimer;
+	Timer characterShootTimer;
+	Timer enemyShootTimer;
+
+	moveTimer.start();
+	frameTimer.start();
+	scrollingTimer.start();
+	characterShootTimer.start();
+	enemyShootTimer.start();
+
+	enemy.createBullets();
+
 	bool quit = false;
 	SDL_Event e;
 	while (!quit) {
@@ -96,18 +122,34 @@ int main(int argc, char* argv[]) {
 		//Computing somthing
 		
 		// Axis of  mainCharater 
-		mainCharacter.move();
-	
-		//Scroll screen
-		scrollingOffset++;
-		if (scrollingOffset > background.getHeight()) {
-			scrollingOffset = 0;
+
+		mainCharacter.move(moveTimer.getTicks()/1000.0);
+		moveTimer.start();//reset the timer
+
+		if (characterShootTimer.getTicks()>100) {
+			mainCharacter.shoot(fireSound, characterShootTimer.getTicks()/1000.0);
+			characterShootTimer.start();
 		}
+		 
+		
+		enemy.moveBullets(frameTimer.getTicks()/1000.0);
+	
+		frameTimer.start();
+
 
 		//Play music
 		if (Mix_PlayingMusic() == 0) {
 			//Play the music
 			Mix_PlayMusic(backgroundMusic, -1);
+		}
+
+		//Scroll screen
+		if (scrollingTimer.getTicks() > 16) {
+			scrollingOffset++;
+			scrollingTimer.start(); //Reset the timer
+		}
+		if (scrollingOffset > background.getHeight()) {
+			scrollingOffset = 0;
 		}
 
 		//Clear screen
@@ -118,12 +160,11 @@ int main(int argc, char* argv[]) {
 		background.render(renderer, 0, scrollingOffset);
 		background.render(renderer, 0, scrollingOffset-background.getHeight());
 		mainCharacter.render(renderer);
-
+		enemy.render(renderer);
 
 		//Update screen
 		SDL_RenderPresent(renderer);
-		SDL_Delay(1000 / 59);
-
+		
 	}
 	
 
@@ -131,6 +172,7 @@ int main(int argc, char* argv[]) {
 	
 	background.free();
 	mainCharacter.free();
+	
 
 	SDL_DestroyRenderer(renderer);
 	renderer = NULL;
@@ -139,6 +181,11 @@ int main(int argc, char* argv[]) {
 
 	Mix_FreeMusic(backgroundMusic);
 	backgroundMusic = NULL;
+
+	Mix_FreeChunk(fireSound);
+	fireSound = NULL;
+
+
 
 	Mix_Quit();
 	TTF_Quit();
