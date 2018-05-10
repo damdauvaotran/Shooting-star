@@ -122,32 +122,36 @@ int main(int argc, char* argv[]) {
 		//Computing somthing
 
 		// Axis of  mainCharater 
-		if (mainCharacter.checkAlive(enemy.getBullets())){
+		
+		
+
 			mainCharacter.move(moveTimer.getTicks() / 1000.0);
 			moveTimer.start();//reset the timer
-		}
+		
 
 		if (characterShootTimer.getTicks() > 100) {
 			mainCharacter.shoot(fireSound, characterShootTimer.getTicks() / 1000.0);
-			characterShootTimer.start();
+			characterShootTimer.start();//reset Timer
+			
 		}
+
+		mainCharacter.moveBullets(frameTimer.getTicks() / 1000.0);
 		
-		
+		//Enemy fire
 		
 		if (enemyShootTimer.getTicks()>100) {
-			
-			
-			if (bulletCounter == 0) {
-
-				enemy.createBullet(50, 50, 0);
-
+			for (int i = 0; i < 10; i++) {
+				double angle = (bulletCounter * 10+ i* 36) * M_PI / 180;
+				double x = 50 * cos(angle);
+				double y = 50 * sin(angle);
+				enemy.createBullet(x, y, angle);
 			}
-			
 
 			bulletCounter++;
-			
 			enemyShootTimer.start();
+			
 		}
+
 
 		enemy.moveBullets(frameTimer.getTicks() / 1000.0);
 

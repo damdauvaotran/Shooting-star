@@ -7,7 +7,7 @@
 
 class Bullet {
 public:
-	Bullet(TextureAPI bulletTexture, int x, int y, double angle = 0);
+	Bullet(TextureAPI bulletTexture, double x, double y, double angle = 0);
 	~Bullet();
 
 	void free();

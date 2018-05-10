@@ -2,7 +2,7 @@
 
 
 
-Bullet::Bullet(TextureAPI bulletTexture, int x, int y, double angle) {
+Bullet::Bullet(TextureAPI bulletTexture, double x, double y, double angle) {
 	this->bulletTexture = bulletTexture;
 	mPosX = x;
 	mPosY = y;

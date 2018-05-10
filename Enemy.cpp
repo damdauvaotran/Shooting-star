@@ -50,18 +50,7 @@ void Enemy::free() {
 
 void Enemy::shoot(double timeStep) {
 	createBullets();
-	for (unsigned int i = 0; i < bullets.size(); i++) {
-		if (bullets[i].getY() + GlobalResource::BULLET_HEIGHT < 0
-			||bullets[i].getX() + GlobalResource::BULLET_WIDTH <0 
-			|| bullets[i].getY() > GlobalResource::MAIN_AREA_HEIGHT
-			|| bullets[i].getX()  > GlobalResource::MAIN_AREA_WIDTH) {
 
-			bullets.erase(bullets.begin() + i);
-		}
-
-
-
-	}
 }
 
 void Enemy::createBullets() {
@@ -84,8 +73,6 @@ void Enemy::moveBullets(double timeStep) {
 		double angle = bullets[i].getAngle();
 		bullets[i].setX(bullets[i].getX() + GlobalResource::ENEMY_BULLET_VEL*cos(angle)* timeStep);
 		bullets[i].setY(bullets[i].getY() - GlobalResource::ENEMY_BULLET_VEL*sin(angle)* timeStep);
-		bullets[i].setHitBoxCenterX(bullets[i].getX() + bullets[i].getBulletRadius());
-		bullets[i].setHitBoxCenterY(bullets[i].getY() +  bullets[i].getBulletRadius());
 
 
 		if (bullets[i].getY() + GlobalResource::BULLET_HEIGHT < 0
