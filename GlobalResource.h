@@ -9,7 +9,7 @@ public:
 	static const int BULLET_WIDTH = 11;
 	static const int BULLET_HEIGHT = 19;
 	static const int BULLET_VEL = 500;
-	static const int ENEMY_BULLET_VEL = 10;
+	static const int ENEMY_BULLET_VEL = 1;
 	GlobalResource();
 	~GlobalResource();
 

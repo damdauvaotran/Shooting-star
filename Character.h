@@ -14,6 +14,7 @@ using namespace std;
 class Character {
 public:
 	
+	
 	static const int CHARACTER_WIDTH = 44;
 	static const int CHARACTER_HEIGHT = 56;
 
@@ -39,9 +40,8 @@ public:
 	void shoot(Mix_Chunk *sound, double stepTime);
 
 	void createBullets();
-
-	
-	
+	bool checkCollision(Bullet bullet);
+	bool checkAlive(vector<Bullet> bullets);
 private:
 	
 	TextureAPI characterTexture;
@@ -56,12 +56,15 @@ private:
 	//The X and Y offsets of the dot
 	double mPosX, mPosY;
 
-	//The velocity of the dot
-	int mVelX, mVelY;
+	//Center of the hitbox
+	double mHitBoxCenterX, mHitBoxCenterY;
 
+	const int HITBOX_RADIUS = 3;
 	
+	double mVelX, mVelY;
 
-	vector <Bullet> bullets ;
+	int hp;
+	vector <Bullet> bullets;
 
 		
 };

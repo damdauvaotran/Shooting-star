@@ -38,8 +38,11 @@ public:
 
 	void createBullets();
 
+	void createBullet(double x, double y, double angle);
+
 	void moveBullets(double stepTime);
 
+	vector<Bullet> getBullets();
 	
 
 private:

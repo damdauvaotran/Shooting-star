@@ -102,7 +102,7 @@ int main(int argc, char* argv[]) {
 	characterShootTimer.start();
 	enemyShootTimer.start();
 
-	enemy.createBullets();
+	int bulletCounter = 0;
 
 	bool quit = false;
 	SDL_Event e;
@@ -120,19 +120,43 @@ int main(int argc, char* argv[]) {
 		}
 
 		//Computing somthing
-		
+
 		// Axis of  mainCharater 
+		if (mainCharacter.checkAlive(enemy.getBullets())){
+			mainCharacter.move(moveTimer.getTicks() / 1000.0);
+			moveTimer.start();//reset the timer
+		}
 
-		mainCharacter.move(moveTimer.getTicks()/1000.0);
-		moveTimer.start();//reset the timer
-
-		if (characterShootTimer.getTicks()>100) {
-			mainCharacter.shoot(fireSound, characterShootTimer.getTicks()/1000.0);
+		if (characterShootTimer.getTicks() > 100) {
+			mainCharacter.shoot(fireSound, characterShootTimer.getTicks() / 1000.0);
 			characterShootTimer.start();
 		}
-		 
 		
-		enemy.moveBullets(frameTimer.getTicks()/1000.0);
+		
+		
+		if (enemyShootTimer.getTicks()>100) {
+			
+			
+			if (bulletCounter == 0) {
+
+				enemy.createBullet(50, 50, 0);
+
+			}
+			
+
+			bulletCounter++;
+			
+			enemyShootTimer.start();
+		}
+
+		enemy.moveBullets(frameTimer.getTicks() / 1000.0);
+
+		
+
+
+
+
+		
 	
 		frameTimer.start();
 
@@ -164,6 +188,8 @@ int main(int argc, char* argv[]) {
 
 		//Update screen
 		SDL_RenderPresent(renderer);
+		
+		
 		
 	}
 	

@@ -2,10 +2,11 @@
 
 
 
-Bullet::Bullet(TextureAPI bulletTexture, int x, int y) {
+Bullet::Bullet(TextureAPI bulletTexture, int x, int y, double angle) {
 	this->bulletTexture = bulletTexture;
 	mPosX = x;
 	mPosY = y;
+	this->angle = angle;
 }
 
 
@@ -30,17 +31,39 @@ double Bullet::getY() {
 	return mPosY;
 }
 
-void Bullet::setY(double y) {
-	mPosY = y;
-}
 void Bullet::setX(double x) {
 	mPosX = x;
+	setHitBoxCenterX(x + BULLET_RADIUS);
+}
+
+void Bullet::setY(double y) {
+	mPosY = y;
+	setHitBoxCenterX(y + BULLET_RADIUS);
 }
 
 double Bullet::getAngle() {
 	return angle;
 }
 
-void Bullet::setAngle(double _angle) {
-	angle = _angle;
+void Bullet::setAngle(double angle) {
+	this->angle = angle;
 }
+
+double Bullet::getHitBoxCenterX() {
+	return mHitBoxCenterX;
+}
+double Bullet::getHitBoxCenterY() {
+	return mHitBoxCenterY;
+}
+void Bullet::setHitBoxCenterX(double x) {
+	mHitBoxCenterX = x;
+
+}
+void Bullet::setHitBoxCenterY(double y) {
+	mHitBoxCenterY = y;
+}
+int Bullet::getBulletRadius() {
+	return BULLET_RADIUS;
+}
+
+

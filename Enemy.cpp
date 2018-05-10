@@ -66,15 +66,13 @@ void Enemy::shoot(double timeStep) {
 
 void Enemy::createBullets() {
 	for (int i = 0; i < 37; i++) {
-		double phi = (10 * i)* M_PI/180;
+		double phi = (10 * i);
 		double r = 50 +  20*phi;
 		double x = r * cos(phi);
 		double y = r * sin(phi);
 
-		Bullet newBullet = Bullet(bulletTexture, mPosX + x, mPosY - y);
-		newBullet.setAngle(phi);
+		Bullet newBullet = Bullet(bulletTexture, mPosX+25 + x, mPosY +25 - y, phi);
 		bullets.push_back(newBullet);
-		
 	} 
 	
 
@@ -82,12 +80,30 @@ void Enemy::createBullets() {
 
 void Enemy::moveBullets(double timeStep) {
 	for (int i = 0; i < bullets.size(); i++) {
-		Bullet bullet = bullets[i];
-		bullet.setX(bullet.getX() + GlobalResource::ENEMY_BULLET_VEL);
-		bullet.setY(bullet.getY() + GlobalResource::ENEMY_BULLET_VEL);
+	
+		double angle = bullets[i].getAngle();
+		bullets[i].setX(bullets[i].getX() + GlobalResource::ENEMY_BULLET_VEL*cos(angle)* timeStep);
+		bullets[i].setY(bullets[i].getY() - GlobalResource::ENEMY_BULLET_VEL*sin(angle)* timeStep);
+		bullets[i].setHitBoxCenterX(bullets[i].getX() + bullets[i].getBulletRadius());
+		bullets[i].setHitBoxCenterY(bullets[i].getY() +  bullets[i].getBulletRadius());
 
-		cout << i<<"\t"<<bullet.getX() + GlobalResource::BULLET_VEL * cos(bullet.getAngle())*timeStep << '\t'
-			<< bullet.getY() - GlobalResource::BULLET_VEL * sin(bullet.getAngle())*timeStep<<'\n';
+
+		if (bullets[i].getY() + GlobalResource::BULLET_HEIGHT < 0
+			|| bullets[i].getX() + GlobalResource::BULLET_WIDTH <0
+			|| bullets[i].getY() > GlobalResource::MAIN_AREA_HEIGHT
+			|| bullets[i].getX()  > GlobalResource::MAIN_AREA_WIDTH) {
+
+			bullets.erase(bullets.begin() + i);
+		}
 	}
 	
+}
+
+void Enemy::createBullet(double x, double y, double angle) {
+	Bullet newBullet = Bullet(bulletTexture, mPosX + x + 25, mPosY - y +25 , angle);
+	bullets.push_back(newBullet);
+}
+
+vector<Bullet> Enemy::getBullets() {
+	return bullets;
 }

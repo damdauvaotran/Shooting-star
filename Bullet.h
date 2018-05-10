@@ -7,12 +7,11 @@
 
 class Bullet {
 public:
-	Bullet(TextureAPI bulletTexture, int x, int y);
+	Bullet(TextureAPI bulletTexture, int x, int y, double angle = 0);
 	~Bullet();
 
 	void free();
 
-	void move();
 
 	void render(SDL_Renderer *renderer, double angle = 0);
 	double getX();
@@ -22,15 +21,23 @@ public:
 
 	void setX(double x);
 	void setY(double y);
-	
+	double getHitBoxCenterX();
+	double getHitBoxCenterY();
+	void setHitBoxCenterX(double x);
+	void setHitBoxCenterY(double y);
+	int getBulletRadius();
+
 private:
 	TextureAPI bulletTexture;
 
-	//The X and Y offsets of the dot
 	double mPosX;
 	double mPosY;
 
 	double angle = 0;
+
+	int BULLET_RADIUS = 5;
+	double mHitBoxCenterX, mHitBoxCenterY;
+
 
 };
 
