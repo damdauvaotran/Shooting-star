@@ -43,6 +43,7 @@ public:
 	bool checkAlive(vector<Bullet> bullets);
 	void createBullet(double x, double y, double angle = 0);
 	void moveBullets(double timeStep);
+	vector<Bullet> getBullets();
 private:
 	
 	TextureAPI characterTexture;

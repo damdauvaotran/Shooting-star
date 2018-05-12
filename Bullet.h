@@ -26,6 +26,9 @@ public:
 	void setHitBoxCenterX(double x);
 	void setHitBoxCenterY(double y);
 	int getBulletRadius();
+	
+	bool isCollision(double centerX, double centerY, int radius);
+
 
 private:
 	TextureAPI bulletTexture;
