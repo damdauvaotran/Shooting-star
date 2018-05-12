@@ -9,12 +9,13 @@
 #include "TextureAPI.h"
 #include "GlobalResource.h"
 #include "Bullet.h"
+#include "EnemyBullet.h"
 
 using namespace std;
 
 class Enemy {
 public:
-	Enemy(double x, double y, double velX, double velY);
+	Enemy(double x, double y, double velX);
 	~Enemy();
 
 	static const int ENEMY_WIDTH = 44;
@@ -38,11 +39,10 @@ public:
 
 	void createBullets();
 
-	void createBullet(double x, double y, double angle);
+	void createBullet(EnemyBullet &bullets, double x, double y, double angle);
 
-	void moveBullets(double stepTime);
 
-	vector<Bullet> getBullets();
+	
 	
 
 private:
@@ -50,14 +50,14 @@ private:
 	TextureAPI bulletTexture;
 
 	//The X and Y offsets of the dot
-	int mPosX, mPosY;
+	double mPosX, mPosY;
 
 	//The velocity of the dot
-	int mVelX, mVelY;
+	int velocity;
 
 	const string ENEMY_PATH = "Resource/Image/enemy.png";
-	const string BULLET_PATH = "Resource/Image/enemyBullet.png";
+	const string BULLET_PATH = "Resource/Image/enemy.png";
 
-	vector <Bullet> bullets;
+	
 };
 

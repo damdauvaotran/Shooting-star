@@ -7,7 +7,7 @@
 
 class Bullet {
 public:
-	Bullet(TextureAPI bulletTexture, int x, int y, double angle = 0);
+	Bullet(TextureAPI bulletTexture, double x, double y, double angle = 0);
 	~Bullet();
 
 	void free();
@@ -26,6 +26,9 @@ public:
 	void setHitBoxCenterX(double x);
 	void setHitBoxCenterY(double y);
 	int getBulletRadius();
+	
+	bool isCollision(double centerX, double centerY, int radius);
+
 
 private:
 	TextureAPI bulletTexture;

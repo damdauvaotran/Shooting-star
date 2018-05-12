@@ -7,6 +7,7 @@
 #include "Timer.h"
 #include "Character.h"
 #include "Enemy.h"
+#include "EnemyBullet.h"
 #include "GlobalResource.h"
 
 using namespace std;
@@ -15,11 +16,12 @@ using namespace std;
 int main(int argc, char* argv[]) {
 	SDL_Window * window = NULL;
 	SDL_Renderer *renderer = NULL;
+
 	
 	const int SCREEN_WIDTH = GlobalResource::SCREEN_WIDTH;
 	const int SCREEN_HEIGHT = GlobalResource::SCREEN_HEIGHT;
 
-
+	EnemyBullet enemyBullets;
 	
 
 	/*Initialize */
@@ -77,7 +79,7 @@ int main(int argc, char* argv[]) {
 	mainCharacter.loadFromFile(renderer);
 
 	//Load enemy
-	Enemy enemy (GlobalResource::MAIN_AREA_WIDTH/2, 100, 0,0);
+	Enemy enemy (GlobalResource::MAIN_AREA_WIDTH/2, 100, 0);
 	enemy.loadFromFile(renderer);
 
 	//Load bullet
@@ -85,9 +87,13 @@ int main(int argc, char* argv[]) {
 	TextureAPI bullet;
 	bullet.loadFromFile(renderer, "Resource/Image/bullet.png");
 
+	enemyBullets.loadFromFile(renderer, "Resource/Image/12px-green-round.png");
+
 	
 
 	/*Main loop*/
+
+	
 
 	int scrollingOffset = 0;//this make the screen scroll forever
 	Timer moveTimer;
@@ -122,34 +128,38 @@ int main(int argc, char* argv[]) {
 		//Computing somthing
 
 		// Axis of  mainCharater 
-		if (mainCharacter.checkAlive(enemy.getBullets())){
+		
+		
+
 			mainCharacter.move(moveTimer.getTicks() / 1000.0);
 			moveTimer.start();//reset the timer
-		}
+		
 
 		if (characterShootTimer.getTicks() > 100) {
 			mainCharacter.shoot(fireSound, characterShootTimer.getTicks() / 1000.0);
-			characterShootTimer.start();
+			characterShootTimer.start();//reset Timer
+			
 		}
+
+		mainCharacter.moveBullets(frameTimer.getTicks() / 1000.0);
 		
-		
+		//Enemy fire
 		
 		if (enemyShootTimer.getTicks()>100) {
-			
-			
-			if (bulletCounter == 0) {
-
-				enemy.createBullet(50, 50, 0);
-
+			for (int i = 0; i < 10; i++) {
+				double angle = (bulletCounter * 10+ i* 36) * M_PI / 180;
+				double x = 50 * cos(angle);
+				double y = 50 * sin(angle);
+				enemy.createBullet(enemyBullets,x, y, angle);
 			}
-			
 
 			bulletCounter++;
-			
 			enemyShootTimer.start();
+			
 		}
 
-		enemy.moveBullets(frameTimer.getTicks() / 1000.0);
+
+		enemyBullets.moveBullets(frameTimer.getTicks() / 1000.0);
 
 		
 
@@ -181,10 +191,12 @@ int main(int argc, char* argv[]) {
 		SDL_RenderClear(renderer);
 
 		//Render here
-		background.render(renderer, 0, scrollingOffset);
-		background.render(renderer, 0, scrollingOffset-background.getHeight());
-		mainCharacter.render(renderer);
-		enemy.render(renderer);
+		//background.render(renderer, 0, scrollingOffset);
+		//background.render(renderer, 0, scrollingOffset-background.getHeight());
+		//mainCharacter.render(renderer);
+		//enemy.render(renderer);
+		enemyBullets.render(renderer);
+		
 
 		//Update screen
 		SDL_RenderPresent(renderer);
