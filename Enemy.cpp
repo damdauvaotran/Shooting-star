@@ -2,22 +2,21 @@
 
 
 
-Enemy::Enemy(double x, double y, double vel) {
+Enemy::Enemy(TextureAPI enemyTexture, double x, double y, int vel,double _angle) {
 	mPosX = x;
 	mPosY = y;
-	velocity = GlobalResource::ENEMY_VEL;
+	velocity = vel;
+	angle = _angle;
+	this->enemyTexture = enemyTexture;
 }
 
 
 
-Enemy::~Enemy() {
-}
 
 
 
 void Enemy::loadFromFile(SDL_Renderer *renderer) {
-	enemyTexture.loadFromFile(renderer, ENEMY_PATH);
-	bulletTexture.loadFromFile(renderer, BULLET_PATH);
+	
 
 }
 
@@ -26,12 +25,12 @@ void Enemy::handleEvent(SDL_Event& e){
 }
 
 void Enemy::move(double timeStep) {
-	mPosX += velocity * timeStep;
+	
 	
 }
 
 
-void Enemy::render(SDL_Renderer *renderer, double angle) {
+void Enemy::render(SDL_Renderer *renderer) {
 	enemyTexture.render(renderer, (int)mPosX, (int)mPosY);
 
 	
@@ -47,6 +46,24 @@ void Enemy::free() {
 
 void Enemy::createBullet(EnemyBullet &bullets, double x, double y, double angle) {
 	bullets.createBullet(mPosX, x, mPosY, y, angle);
-	
 }
 
+void Enemy::setX(double x) {
+	mPosX = x;
+}
+void Enemy::setY(double y) {
+	mPosY = y;
+}
+double Enemy::getX() {
+	return mPosX;
+}
+double Enemy::getY() {
+	return mPosY;
+}
+
+void Enemy::setAngle(double angle) {
+	this->angle = angle;
+}
+double Enemy::getAngle() {
+	return angle;
+}

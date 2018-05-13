@@ -9,19 +9,22 @@
 using namespace std;
 class EnemyBullet {
 public:
+
+	
 	
 	EnemyBullet();
 	~EnemyBullet();
 
 
 
-	void loadFromFile(SDL_Renderer *renderer ,string path = "Resource/Image/enemy.png");
+	void loadFromFile(SDL_Renderer *renderer ,string path);
 	void render(SDL_Renderer *renderer);
 	void createBullet(double mPosX, double x, double mPosY, double y, double angle);
 
 	void moveBullets(double stepTime);
 	bool isCollision(double centerX, double centerY, int radius);
 	vector<Bullet> getBullets();
+	
 private:
 	TextureAPI bulletTexture;
 	vector<Bullet> bullets;

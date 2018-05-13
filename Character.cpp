@@ -118,7 +118,7 @@ void Character::free() {
 	characterTexture.free();
 }
 
-void Character::shoot(Mix_Chunk *sound, double stepTime) {
+void Character::shoot() {
 	createBullet(mPosX, mPosY);
 	
 }
@@ -126,10 +126,7 @@ void Character::shoot(Mix_Chunk *sound, double stepTime) {
 void Character::moveBullets(double timeStep) {
 	for (int i = 0; i < bullets.size(); i++ ) {
 		bullets[i].setY(bullets[i].getY() - GlobalResource::BULLET_VEL* (double)timeStep);
-	}
-
-
-	
+	}	
 }
 
 
@@ -158,4 +155,15 @@ bool Character::checkAlive(vector<Bullet> bullets) {
 void Character::createBullet(double x, double y, double angle) {
 	Bullet bullet = Bullet(bulletTexture, x, y, angle);
 	bullets.push_back(bullet);
+}
+
+double Character::getX() {
+	return mPosX;
+}
+double Character::getY() {
+	return mPosY;
+}
+
+vector<Bullet> Character::getBullets() {
+	return bullets;
 }

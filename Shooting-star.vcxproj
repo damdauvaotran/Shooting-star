@@ -129,6 +129,7 @@
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyBullet.cpp" />
+    <ClCompile Include="Enemies.cpp" />
     <ClCompile Include="GlobalResource.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="TextureAPI.cpp" />
@@ -139,6 +140,7 @@
     <ClInclude Include="Character.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyBullet.h" />
+    <ClInclude Include="Enemies.h" />
     <ClInclude Include="GlobalResource.h" />
     <ClInclude Include="TextureAPI.h" />
     <ClInclude Include="Timer.h" />

@@ -15,8 +15,9 @@ using namespace std;
 
 class Enemy {
 public:
-	Enemy(double x, double y, double velX);
-	~Enemy();
+	Enemy(TextureAPI enemyTexture, double x, double y, int vel , double angle);
+
+
 
 	static const int ENEMY_WIDTH = 44;
 	static const int ENEMY_HEIGHT = 56;
@@ -31,17 +32,21 @@ public:
 	void move(double timeStep);
 
 	
-	void render(SDL_Renderer *renderer, double angle = 0);
+	void render(SDL_Renderer *renderer);
 
 	void free();
 
-	void shoot(double timeStep);
 
-	void createBullets();
+
 
 	void createBullet(EnemyBullet &bullets, double x, double y, double angle);
 
-
+	void setX(double x);
+	void setY(double y);
+	double getX();
+	double getY();
+	void setAngle(double angle);
+	double getAngle();
 	
 	
 
@@ -54,9 +59,9 @@ private:
 
 	//The velocity of the dot
 	int velocity;
+	double angle;
 
-	const string ENEMY_PATH = "Resource/Image/enemy.png";
-	const string BULLET_PATH = "Resource/Image/enemy.png";
+
 
 	
 };

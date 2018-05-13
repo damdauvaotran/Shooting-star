@@ -17,7 +17,7 @@ void EnemyBullet::loadFromFile(SDL_Renderer *renderer, string path) {
 
 void EnemyBullet::render (SDL_Renderer *renderer) {
 	for (unsigned int i = 0; i < bullets.size(); i++) {
-		bullets[i].render(renderer, -bullets[i].getAngle() * 180 / M_PI);
+		bullets[i].render(renderer, -bullets[i].getAngle());
 	}
 }
 
@@ -26,7 +26,7 @@ void EnemyBullet::render (SDL_Renderer *renderer) {
 void EnemyBullet::moveBullets(double timeStep) {
 	for (int i = 0; i < bullets.size(); i++) {
 
-		double angle = bullets[i].getAngle();
+		double angle = bullets[i].getAngle() *M_PI / 180;
 		bullets[i].setX(bullets[i].getX() + GlobalResource::ENEMY_BULLET_VEL*cos(angle)* timeStep);
 		bullets[i].setY(bullets[i].getY() - GlobalResource::ENEMY_BULLET_VEL*sin(angle)* timeStep);
 
@@ -43,7 +43,7 @@ void EnemyBullet::moveBullets(double timeStep) {
 }
 
 void EnemyBullet::createBullet(double mPosX, double x, double mPosY, double y, double angle) {
-	Bullet newBullet = Bullet(bulletTexture, mPosX + x + 25, mPosY - y + 25, angle);
+	Bullet newBullet = Bullet(bulletTexture, mPosX + x , mPosY -y , angle);
 	bullets.push_back(newBullet);
 }
 
