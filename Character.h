@@ -8,6 +8,7 @@
 #include "TextureAPI.h"
 #include "GlobalResource.h"
 #include "Bullet.h"
+#include "EnemyBullet.h"
 
 using namespace std;
 
@@ -24,7 +25,7 @@ public:
 	Character();
 	
 
-	void loadFromFile(SDL_Renderer *renderer);
+	void loadFromFile(SDL_Renderer *renderer, string path);
 
 	//Takes key presses and adjusts the dot's velocity
 	void handleEvent(SDL_Event& e);
@@ -41,7 +42,7 @@ public:
 
 	bool checkCollision(Bullet bullet);
 	bool checkAlive(vector<Bullet> bullets);
-	void createBullet(double x, double y, double angle = 0);
+	void createBullet(EnemyBullet &bullet, double angle = 90);
 	void moveBullets(double timeStep);
 	vector<Bullet> getBullets();
 	double getX();
@@ -61,7 +62,7 @@ private:
 	double mPosX, mPosY;
 
 	//Center of the hitbox
-	double mHitBoxCenterX, mHitBoxCenterY;
+	
 
 	const int HITBOX_RADIUS = 3;
 	

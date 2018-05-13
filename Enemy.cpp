@@ -45,7 +45,7 @@ void Enemy::free() {
 
 
 void Enemy::createBullet(EnemyBullet &bullets, double x, double y, double angle) {
-	bullets.createBullet(mPosX, x, mPosY, y, angle);
+	bullets.createBullet(mPosX+24, x, mPosY+24, y, angle);
 }
 
 void Enemy::setX(double x) {

@@ -21,7 +21,7 @@ public:
 	void render(SDL_Renderer *renderer);
 	void createBullet(double mPosX, double x, double mPosY, double y, double angle);
 
-	void moveBullets(double stepTime);
+	void moveBullets(double vel, double stepTime);
 	bool isCollision(double centerX, double centerY, int radius);
 	vector<Bullet> getBullets();
 	

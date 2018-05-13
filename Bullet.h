@@ -38,7 +38,7 @@ private:
 
 	double angle = 0;
 
-	int BULLET_RADIUS = 5;
+	int BULLET_RADIUS = 6;
 	double mHitBoxCenterX, mHitBoxCenterY;
 
 

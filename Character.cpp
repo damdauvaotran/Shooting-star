@@ -5,8 +5,7 @@
 Character::Character() {
 	mPosX = (320 - CHARACTER_WIDTH) / 2;
 	mPosY = GlobalResource::SCREEN_HEIGHT - CHARACTER_HEIGHT;
-	mHitBoxCenterX = mPosX + 22;
-	mHitBoxCenterY = mPosY + 36;
+
 	mVelX = 0;
 	mVelY = 0;
 	hp = 3;
@@ -14,8 +13,8 @@ Character::Character() {
 
 
 
-void Character::loadFromFile(SDL_Renderer *renderer) {
-	characterTexture.loadFromFile(renderer, CHARACTER_PATH);
+void Character::loadFromFile(SDL_Renderer *renderer, string path) {
+	characterTexture.loadFromFile(renderer, path);
 	bulletTexture.loadFromFile(renderer, BULLET_PATH);
 }
 
@@ -101,9 +100,7 @@ void Character::move(double timeStep) {
 		mPosY = GlobalResource::MAIN_AREA_HEIGHT - CHARACTER_HEIGHT;
 	}
 
-	mHitBoxCenterX = mPosX + 22;
-	mHitBoxCenterY = mPosY + 36;
-	
+
 }
 
 //Shows the dot on the screen
@@ -119,7 +116,7 @@ void Character::free() {
 }
 
 void Character::shoot() {
-	createBullet(mPosX, mPosY);
+	
 	
 }
 
@@ -131,6 +128,8 @@ void Character::moveBullets(double timeStep) {
 
 
 bool Character::checkCollision(Bullet bullet) {
+	double mHitBoxCenterX = mPosX + 22;
+	double mHitBoxCenterY = mPosY + 36;
 	double d = (mHitBoxCenterX - bullet.getHitBoxCenterX())*(mHitBoxCenterX - bullet.getHitBoxCenterX()) + (mHitBoxCenterY - bullet.getHitBoxCenterY())*(mHitBoxCenterY - bullet.getHitBoxCenterY());
 	if (d < 64) {
 		return true;
@@ -152,9 +151,8 @@ bool Character::checkAlive(vector<Bullet> bullets) {
 	}
 }
 
-void Character::createBullet(double x, double y, double angle) {
-	Bullet bullet = Bullet(bulletTexture, x, y, angle);
-	bullets.push_back(bullet);
+void Character::createBullet(EnemyBullet &bullets, double angle) {
+	bullets.createBullet(mPosX+ 14, 0, mPosY-5, 0, angle);
 }
 
 double Character::getX() {

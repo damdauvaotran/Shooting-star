@@ -1,6 +1,10 @@
 #pragma once
 #include <iostream>
 #include <cmath>
+#include <stdlib.h>     /* srand, rand */
+#include <time.h>       /* time */
+#include <sstream>
+#include <string>
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_mixer.h>
@@ -17,15 +21,20 @@ using namespace std;
 
 
 int main(int argc, char* argv[]) {
+	srand(time(NULL));
 	SDL_Window * window = NULL;
 	SDL_Renderer *renderer = NULL;
+	
+	
 
 	
 	const int SCREEN_WIDTH = GlobalResource::SCREEN_WIDTH;
 	const int SCREEN_HEIGHT = GlobalResource::SCREEN_HEIGHT;
 
-	EnemyBullet enemyBullets;
-	vector<Bullet> bullets;
+	
+
+
+
 
 	/*Initialize */
 
@@ -79,20 +88,31 @@ int main(int argc, char* argv[]) {
 
 	//Load Character
 	Character mainCharacter;
-	mainCharacter.loadFromFile(renderer);
+	mainCharacter.loadFromFile(renderer, "Resource/Image/main-character.png");
 
 	//Load enemy
 	Enemies enemies;
 	enemies.loadFromFile(renderer, "Resource/Image/enemy.png");
 
-
+	
 
 	//Load bullet
 
+	EnemyBullet charBullet;
+	charBullet.loadFromFile(renderer, "Resource/Image/bullet.png");
 
-
+	EnemyBullet enemyBullets;
 	enemyBullets.loadFromFile(renderer, "Resource/Image/12px-green-round.png");
 
+	//load font
+	TTF_Font *gugi;
+	gugi = TTF_OpenFont("Resource/Font/Gugi.ttf",40);
+
+	//
+	TextureAPI scoreTexture;
+
+	TextureAPI scoreBackground;
+	scoreBackground.loadFromFile(renderer, "Resource/Image/Nop.png");
 	
 
 	/*Main loop*/
@@ -101,6 +121,9 @@ int main(int argc, char* argv[]) {
 
 	int scrollingOffset = 0;//this make the screen scroll forever
 	unsigned int stage = 0;
+
+	stringstream scoreText;
+	long score = 0;
 	Timer gameTimer;
 	Timer createEnemyTimer;
 	Timer frameTimer;
@@ -133,16 +156,28 @@ int main(int argc, char* argv[]) {
 		}
 
 		//Computing somthing
+		// Collision
 
 
 
+		if (enemyBullets.isCollision(mainCharacter.getX()+22, mainCharacter.getY()+36, 4)) {
+			stage = 0;
+		}
+
+		for (int i = 0; i < enemies.getEnemy().size(); i++) {
+			Enemy thisEnemy = enemies.getEnemy()[i];
+			if (charBullet.isCollision(thisEnemy.getX() + 24, thisEnemy.getY() + 24, 24)) {
+				score += 100;
+				enemies.deleteEnemy(i);
+			}
+		}
 
 
-		mainCharacter.move(frameTimer.getTicks() / 1000.0);
+		
 
 
 		if (characterShootTimer.getTicks() > 100) {
-			mainCharacter.shoot();
+			mainCharacter.createBullet(charBullet);
 			characterShootTimer.start();//reset Timer
 
 		}
@@ -150,26 +185,31 @@ int main(int argc, char* argv[]) {
 		mainCharacter.moveBullets(frameTimer.getTicks() / 1000.0);
 
 
+		// Score
+		scoreText.str("");
+		scoreText << "Your score: " << score;
+		scoreTexture.loadFromRenderedText(renderer, scoreText.str(), {255,255,255,255},gugi );
 
 		//Create enemy
 		if (gameTimer.getTicks() > 300) {
 			stage = 1;
+			gameTimer.stop();
 		}
 		if (stage == 1) {
 			if (createEnemyTimer.getTicks() > 1000) {
-				enemies.createEnemy(GlobalResource::MAIN_AREA_WIDTH, 60, 180);
+				enemies.createEnemy((rand()%8)*50 , 0, 270);
 
 				createEnemyTimer.start();
 
 			}
 		}
-		//shoot
+		//Enemy shoot
 
 		if (enemyShootTimer.getTicks() > 1000) {
 			for (int index = 0; index < enemies.enemies.size(); index++) {
-				for (int i = 0; i < 10; i++) {
-					int angle = 36 * i;
-					enemies.getEnemy()[index].createBullet(enemyBullets, 10* cos(angle*M_PI/180) , 10*cos(angle*M_PI / 180), angle);
+				for (int i = 0; i < 4; i++) {
+					double angle = i*90 +45;
+					enemies.getEnemy()[index].createBullet(enemyBullets, 0, 0, angle);
 					
 				}
 			}
@@ -178,10 +218,10 @@ int main(int argc, char* argv[]) {
 
 
 
-
-		enemies.moveEnemy(frameTimer.getTicks() / 1000.0);
-		enemyBullets.moveBullets(frameTimer.getTicks() / 1000.0);
-
+		mainCharacter.move(frameTimer.getTicks() / 1000.0);
+		enemies.moveEnemy(frameTimer.getTicks() / 1000.0); 
+		enemyBullets.moveBullets(GlobalResource::ENEMY_BULLET_VEL,frameTimer.getTicks() / 1000.0);
+		charBullet.moveBullets(GlobalResource::BULLET_VEL,frameTimer.getTicks() / 1000.0);
 
 
 
@@ -217,12 +257,15 @@ int main(int argc, char* argv[]) {
 		mainCharacter.render(renderer);
 		enemies.render(renderer);
 		enemyBullets.render(renderer);
+		charBullet.render(renderer);
+		scoreBackground.render(renderer, 400, 0);
+		scoreTexture.render(renderer, 410, 400);
 		
 
 
 		//Update screen
 		SDL_RenderPresent(renderer);
-
+		
 	}
 		
 	

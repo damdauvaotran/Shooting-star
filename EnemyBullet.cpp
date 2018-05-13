@@ -23,12 +23,12 @@ void EnemyBullet::render (SDL_Renderer *renderer) {
 
 
 
-void EnemyBullet::moveBullets(double timeStep) {
+void EnemyBullet::moveBullets(double vel, double timeStep) {
 	for (int i = 0; i < bullets.size(); i++) {
 
 		double angle = bullets[i].getAngle() *M_PI / 180;
-		bullets[i].setX(bullets[i].getX() + GlobalResource::ENEMY_BULLET_VEL*cos(angle)* timeStep);
-		bullets[i].setY(bullets[i].getY() - GlobalResource::ENEMY_BULLET_VEL*sin(angle)* timeStep);
+		bullets[i].setX(bullets[i].getX() + vel*cos(angle)* timeStep);
+		bullets[i].setY(bullets[i].getY() - vel*sin(angle)* timeStep);
 
 
 		if (bullets[i].getY() + GlobalResource::BULLET_HEIGHT < 0
@@ -53,6 +53,7 @@ bool EnemyBullet::isCollision(double centerX, double centerY, int radius) {
 			return true;
 		}
 	}
+	return false;
 }
 
 vector<Bullet> EnemyBullet::getBullets() {

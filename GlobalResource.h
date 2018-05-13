@@ -19,7 +19,7 @@ public:
 	static const int BULLET_HEIGHT = 19;
 	static const int BULLET_VEL = 400;
 	static const int ENEMY_VEL = 50;
-	static const int ENEMY_BULLET_VEL = 200;
+	static const int ENEMY_BULLET_VEL = 100;
 	
 	GlobalResource();
 	~GlobalResource();
