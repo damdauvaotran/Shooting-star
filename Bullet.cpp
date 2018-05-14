@@ -18,6 +18,8 @@ Bullet::~Bullet() {
 
 void Bullet::render(SDL_Renderer *renderer, double angle ) {
 	bulletTexture.render(renderer, mPosX, mPosY, NULL, angle);
+	
+
 }
 
 void Bullet::free() {
@@ -67,10 +69,10 @@ int Bullet::getBulletRadius() {
 }
 
 bool Bullet::isCollision(double centerX, double centerY, int radius) {
-	double d = (centerX - mPosX)*(centerX - mPosX) + (centerY - mPosY)*(centerY - mPosY);
-	if (d > (BULLET_RADIUS + radius)*(BULLET_RADIUS + radius)) {
-		return false;
-	}else {
+	double d = (centerX - (mPosX+7))*(centerX -( mPosX+7)) + (centerY - (mPosY+7))*(centerY - (mPosY+7));
+	if (d <= (BULLET_RADIUS + radius)*(BULLET_RADIUS + radius)) {
 		return true;
+	}else {
+		return false;
 	}
 }

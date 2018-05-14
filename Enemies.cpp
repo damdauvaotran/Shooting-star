@@ -27,8 +27,8 @@ void Enemies::createEnemy(double x, double y, double angle) {
 	
 void Enemies::moveEnemy(double stepTime) {
 	for (unsigned int i = 0; i < enemies.size(); i++ ) {
-		enemies[i].setX(enemies[i].getX() + 100 * stepTime*cos(enemies[i].getAngle()*M_PI / 180));
-		enemies[i].setY(enemies[i].getY() - 100 * stepTime*sin(enemies[i].getAngle()*M_PI / 180));
+		enemies[i].setX(enemies[i].getX() + GlobalResource::ENEMY_VEL * stepTime*cos(enemies[i].getAngle()*M_PI / 180));
+		enemies[i].setY(enemies[i].getY() - GlobalResource::ENEMY_VEL * stepTime*sin(enemies[i].getAngle()*M_PI / 180));
 
 		if (enemies[i].getY() + GlobalResource::BULLET_HEIGHT < 0
 			|| enemies[i].getX() + GlobalResource::BULLET_WIDTH <0

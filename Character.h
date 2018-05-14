@@ -19,7 +19,7 @@ public:
 	static const int CHARACTER_WIDTH = 44;
 	static const int CHARACTER_HEIGHT = 56;
 
-	static const int MIN_CHARACTER_VEL = 50;
+	static const int MIN_CHARACTER_VEL = 200;
 	static const int MAX_CHARACTER_VEL = 300;
 
 	Character();
