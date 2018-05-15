@@ -127,29 +127,8 @@ void Character::moveBullets(double timeStep) {
 }
 
 
-bool Character::checkCollision(Bullet bullet) {
-	double mHitBoxCenterX = mPosX + 22;
-	double mHitBoxCenterY = mPosY + 36;
-	double d = (mHitBoxCenterX - bullet.getHitBoxCenterX())*(mHitBoxCenterX - bullet.getHitBoxCenterX()) + (mHitBoxCenterY - bullet.getHitBoxCenterY())*(mHitBoxCenterY - bullet.getHitBoxCenterY());
-	if (d < 64) {
-		return true;
-	}
-	return false;
-}
-bool Character::checkAlive(vector<Bullet> bullets) {
-	for (Bullet bullet : bullets) {
-		if (checkCollision(bullet)) {
-			hp--;
-		}
-	}
 
-	if (hp < 1) {
-		return false;
-	}
-	else {
-		return true;
-	}
-}
+
 
 void Character::createBullet(EnemyBullet &bullets, double angle) {
 	bullets.createBullet(mPosX+ 14, 0, mPosY-5, 0, angle);

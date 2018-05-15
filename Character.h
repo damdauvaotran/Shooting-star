@@ -40,8 +40,6 @@ public:
 
 	void shoot();
 
-	bool checkCollision(Bullet bullet);
-	bool checkAlive(vector<Bullet> bullets);
 	void createBullet(EnemyBullet &bullet, double angle = 90);
 	void moveBullets(double timeStep);
 	vector<Bullet> getBullets();

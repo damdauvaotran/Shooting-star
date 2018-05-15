@@ -137,7 +137,7 @@ int main(int argc, char* argv[]) {
 	int scrollingOffset = 0;//this make the screen scroll forever
 	unsigned int stage = 0;
 	bool isGameOver = false;
-
+	double level = 4;
 	stringstream scoreText;
 	stringstream highScoreText;
 	stringstream fpsText;
@@ -245,12 +245,13 @@ int main(int argc, char* argv[]) {
 
 		if (enemyShootTimer.getTicks() > 1000) {
 			for (int index = 0; index < enemies.enemies.size(); index++) {
-				for (int i = 0; i < 4; i++) {
-					double angle = i*90 +45;
+				for (int i = 0; i < level; i++) {
+					double angle = i*(360/level);
 					enemies.getEnemy()[index].createBullet(enemyBullets, 0, 0, angle);
 					
 				}
 			}
+			level += 0.5;
 			enemyShootTimer.start();
 		}
 
@@ -303,9 +304,7 @@ int main(int argc, char* argv[]) {
 		fpsTexture.render(renderer, 410, 30);
 		highScoreTexture.render(renderer, 410, 350);
 		scoreTexture.render(renderer, 410, 400);
-		for (int i = 0; i < enemyBullets.getBullets().size(); i++) {
-			SDL_Rect border =  enemyBullets.getBullets()[i].
-		}
+		
 		
 
 

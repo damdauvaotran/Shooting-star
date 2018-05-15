@@ -33,12 +33,11 @@ double Bullet::getY() {
 
 void Bullet::setX(double x) {
 	mPosX = x;
-	setHitBoxCenterX(x + BULLET_RADIUS);
 }
 
 void Bullet::setY(double y) {
 	mPosY = y;
-	setHitBoxCenterX(y + BULLET_RADIUS);
+
 }
 
 double Bullet::getAngle() {
@@ -55,7 +54,7 @@ int Bullet::getBulletRadius() {
 }
 
 bool Bullet::isCollision(double centerX, double centerY, int radius) {
-	double d = (centerX - mPosX+7)*(centerX - mPosX+7) + (centerY - mPosY+7)*(centerY - mPosY+7);
+	double d = (centerX - (mPosX+7))*(centerX - (mPosX+7)) + (centerY - (mPosY+7))*(centerY - (mPosY+7));
 	if (d > (BULLET_RADIUS + radius)*(BULLET_RADIUS + radius)) {
 		return false;
 	}else {
