@@ -35,7 +35,7 @@ void EnemyBullet::moveBullets(double vel, double timeStep) {
 			|| bullets[i].getX() + GlobalResource::BULLET_WIDTH <0
 			|| bullets[i].getY() > GlobalResource::MAIN_AREA_HEIGHT
 			|| bullets[i].getX()  > GlobalResource::MAIN_AREA_WIDTH) {
-
+			
 			bullets.erase(bullets.begin() + i);
 		}
 	}

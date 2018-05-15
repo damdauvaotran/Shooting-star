@@ -52,7 +52,7 @@ int main(int argc, char* argv[]) {
 				cout << "\nCould no init window " << SDL_GetError();
 			}
 			else {
-				renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED| SDL_RENDERER_PRESENTVSYNC);
+				renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 				if (renderer == NULL) {
 					cout << "\nCould not init renderer"<<SDL_GetError();
 				}
@@ -86,6 +86,9 @@ int main(int argc, char* argv[]) {
 	highScoreFileInput.close();
 
 
+	//Load fps 
+	TextureAPI fpsTexture;
+
 	//Load music
 	Mix_Music *backgroundMusic = Mix_LoadMUS("Resource/Sound/shootingStar.mp3");
 	Mix_Chunk *fireSound = Mix_LoadWAV("Resource/Sound/shot.wav");
@@ -110,7 +113,7 @@ int main(int argc, char* argv[]) {
 	charBullet.loadFromFile(renderer, "Resource/Image/bullet.png");
 
 	EnemyBullet enemyBullets;
-	enemyBullets.loadFromFile(renderer, "Resource/Image/green-bullet.png");
+	enemyBullets.loadFromFile(renderer, "Resource/Image/greenbullet.png");
 
 	//load font
 	TTF_Font *gugi;
@@ -123,6 +126,9 @@ int main(int argc, char* argv[]) {
 	TextureAPI scoreBackground;
 	scoreBackground.loadFromFile(renderer, "Resource/Image/Nop.png");
 	
+	//Game over texture
+	TextureAPI gameOverTexture;
+
 
 	/*Main loop*/
 
@@ -130,14 +136,16 @@ int main(int argc, char* argv[]) {
 
 	int scrollingOffset = 0;//this make the screen scroll forever
 	unsigned int stage = 0;
+	bool isGameOver = false;
 
 	stringstream scoreText;
 	stringstream highScoreText;
+	stringstream fpsText;
+	stringstream gameOverText;
+	gameOverText.str("GAME OVER");
 
 	ofstream highScoreFileOutput;
 	
-
-	cout << highScoreFileOutput.fail();
 
 	long score = 0;
 	Timer gameTimer;
@@ -169,7 +177,9 @@ int main(int argc, char* argv[]) {
 			if (e.type == SDL_QUIT) {
 				quit = true;
 			}
-			mainCharacter.handleEvent(e);
+			if (!isGameOver) {
+				mainCharacter.handleEvent(e);
+			}
 
 		}
 
@@ -178,7 +188,8 @@ int main(int argc, char* argv[]) {
 
 		// Collision
 		if (enemyBullets.isCollision(mainCharacter.getX()+22, mainCharacter.getY()+36, 4)) {
-			stage = 0;
+			isGameOver = true;
+			quit = true;
 
 		}
 
@@ -244,7 +255,7 @@ int main(int argc, char* argv[]) {
 		}
 
 
-
+		//Move
 		mainCharacter.move(frameTimer.getTicks() / 1000.0);
 		enemies.moveEnemy(frameTimer.getTicks() / 1000.0); 
 		enemyBullets.moveBullets(GlobalResource::ENEMY_BULLET_VEL,frameTimer.getTicks() / 1000.0);
@@ -252,7 +263,10 @@ int main(int argc, char* argv[]) {
 
 
 
-
+		//FPS
+		fpsText.str("");
+		fpsText << "FPS: " << 1000.0 / frameTimer.getTicks();
+		fpsTexture.loadFromRenderedText(renderer, fpsText.str(), { 255,255,255,255 }, gugi);
 
 
 
@@ -286,14 +300,20 @@ int main(int argc, char* argv[]) {
 		enemyBullets.render(renderer);
 		charBullet.render(renderer);
 		scoreBackground.render(renderer, 400, 0);
+		fpsTexture.render(renderer, 410, 30);
 		highScoreTexture.render(renderer, 410, 350);
 		scoreTexture.render(renderer, 410, 400);
+		for (int i = 0; i < enemyBullets.getBullets().size(); i++) {
+			SDL_Rect border =  enemyBullets.getBullets()[i].
+		}
 		
 
 
 		//Update screen
 		SDL_RenderPresent(renderer);
-		
+		if (frameTimer.getTicks() < 1000 / 65) {
+			SDL_Delay(1000 / 65 - frameTimer.getTicks());
+		}
 	}
 		
 	

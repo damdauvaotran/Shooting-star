@@ -49,19 +49,7 @@ void Bullet::setAngle(double angle) {
 	this->angle = angle;
 }
 
-double Bullet::getHitBoxCenterX() {
-	return mHitBoxCenterX;
-}
-double Bullet::getHitBoxCenterY() {
-	return mHitBoxCenterY;
-}
-void Bullet::setHitBoxCenterX(double x) {
-	mHitBoxCenterX = x;
 
-}
-void Bullet::setHitBoxCenterY(double y) {
-	mHitBoxCenterY = y;
-}
 int Bullet::getBulletRadius() {
 	return BULLET_RADIUS;
 }

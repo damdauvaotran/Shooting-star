@@ -21,10 +21,7 @@ public:
 
 	void setX(double x);
 	void setY(double y);
-	double getHitBoxCenterX();
-	double getHitBoxCenterY();
-	void setHitBoxCenterX(double x);
-	void setHitBoxCenterY(double y);
+	
 	int getBulletRadius();
 	
 	bool isCollision(double centerX, double centerY, int radius);
@@ -39,7 +36,7 @@ private:
 	double angle = 0;
 
 	int BULLET_RADIUS = 6;
-	double mHitBoxCenterX, mHitBoxCenterY;
+
 
 
 };
