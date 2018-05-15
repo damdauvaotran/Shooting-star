@@ -18,7 +18,6 @@ void EnemyBullet::loadFromFile(SDL_Renderer *renderer, string path) {
 void EnemyBullet::render (SDL_Renderer *renderer) {
 	for (unsigned int i = 0; i < bullets.size(); i++) {
 		bullets[i].render(renderer, -bullets[i].getAngle());
-
 	}
 }
 
