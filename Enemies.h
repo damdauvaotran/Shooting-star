@@ -13,9 +13,10 @@ public:
 	void createEnemy( double x,double y, double angle);
 
 	void moveEnemy(double stepTime);
-	vector<Enemy> getEnemy ();
+	vector<Enemy> getEnemies ();
 	void deleteEnemy(int index);
 	bool isCollision(double centerX, double centerY, int radius);
+	void clear();
 private:
 
 	vector <Enemy> enemies;

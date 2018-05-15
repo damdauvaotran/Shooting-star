@@ -189,7 +189,28 @@ int main(int argc, char* argv[]) {
 			}
 			
 			mainCharacter.handleEvent(e);
-			
+			if (isGameOver) {
+				if (e.type == SDL_KEYDOWN) {
+					if (e.key.keysym.sym == SDLK_r) {
+						isGameOver = false;
+						gameTimer.start();
+						createEnemyTimer.start();
+						frameTimer.start();
+						scrollingTimer.start();
+						characterShootTimer.start();
+						enemyShootTimer.start();
+
+						level = 4;//Reset level
+						score = 0;
+						mainCharacter.setDefaultPlace(); //set main character to defalt place
+						enemies.clear(); //delete all enemy on screen
+						
+						charBullet.clear();
+						enemyBullets.clear();
+						
+					}
+				}
+			}
 
 		}
 
@@ -197,17 +218,21 @@ int main(int argc, char* argv[]) {
 
 
 		// Collision
-		if (enemyBullets.isCollision(mainCharacter.getX() + 22, mainCharacter.getY() + 36, 4)) {
+		if (enemies.isCollision(mainCharacter.getX() + 22, mainCharacter.getY() + 36, 4)|| enemyBullets.isCollision(mainCharacter.getX() + 22, mainCharacter.getY() + 36, 4)) {
 			isGameOver = true;
 			Mix_HaltMusic();
-		}
-		if (enemies.isCollision(mainCharacter.getX() + 22, mainCharacter.getY() + 36, 4)) {
-			isGameOver = true;
+			gameTimer.stop();
+			createEnemyTimer.stop();
+			frameTimer.stop();
+			scrollingTimer.stop();
+			characterShootTimer.stop();
+			enemyShootTimer.stop();
+			
 		}
 
 		if (!isGameOver) {
-			for (int i = 0; i < enemies.getEnemy().size(); i++) {
-				Enemy thisEnemy = enemies.getEnemy()[i];
+			for (int i = 0; i < enemies.getEnemies().size(); i++) {
+				Enemy thisEnemy = enemies.getEnemies()[i];
 				if (charBullet.isCollision(thisEnemy.getX() + 24, thisEnemy.getY() + 24, 24)) {
 					score += 100;
 					enemies.deleteEnemy(i);
@@ -257,10 +282,10 @@ int main(int argc, char* argv[]) {
 			//Enemy shoot
 
 			if (enemyShootTimer.getTicks() > 1000) {
-				for (int index = 0; index < enemies.getEnemy().size(); index++) {
+				for (int index = 0; index < enemies.getEnemies().size(); index++) {
 					for (int i = 0; i < level; i++) {
 						double angle = i * (360 / level);
-						enemies.getEnemy()[index].createBullet(enemyBullets, 0, 0, angle);
+						enemies.getEnemies()[index].createBullet(enemyBullets, 0, 0, angle);
 
 					}
 				}

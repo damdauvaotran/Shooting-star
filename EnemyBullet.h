@@ -24,6 +24,8 @@ public:
 	void moveBullets(double vel, double stepTime);
 	bool isCollision(double centerX, double centerY, int radius);
 	vector<Bullet> getBullets();
+	void deleteBullet(int index);
+	void clear();
 	
 private:
 	TextureAPI bulletTexture;

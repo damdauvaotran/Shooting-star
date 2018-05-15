@@ -35,14 +35,14 @@ void Enemies::moveEnemy(double stepTime) {
 			|| enemies[i].getY() > GlobalResource::MAIN_AREA_HEIGHT
 			|| enemies[i].getX()  > GlobalResource::MAIN_AREA_WIDTH) {
 
-			enemies.erase(enemies.begin() + i);
+			deleteEnemy(i);
 		}
 
 		
 	}
 }
 
-vector<Enemy> Enemies::getEnemy() {
+vector<Enemy> Enemies::getEnemies() {
 	return enemies;
 }
 
@@ -57,4 +57,8 @@ bool Enemies::isCollision(double centerX, double centerY, int radius) {
 		}
 	}
 	return false;
+}
+
+void Enemies::clear() {
+	enemies.clear();
 }

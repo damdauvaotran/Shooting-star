@@ -3,7 +3,7 @@
 
 
 Character::Character() {
-	mPosX = (320 - CHARACTER_WIDTH) / 2;
+	mPosX = (400 - CHARACTER_WIDTH) / 2;
 	mPosY = GlobalResource::SCREEN_HEIGHT - CHARACTER_HEIGHT;
 
 	mVelX = 0;
@@ -143,4 +143,9 @@ double Character::getY() {
 
 vector<Bullet> Character::getBullets() {
 	return bullets;
+}
+
+void Character::setDefaultPlace() {
+	mPosX = (400 - CHARACTER_WIDTH) / 2;
+	mPosY = GlobalResource::SCREEN_HEIGHT - CHARACTER_HEIGHT;
 }

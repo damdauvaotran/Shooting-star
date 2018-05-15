@@ -36,7 +36,7 @@ void EnemyBullet::moveBullets(double vel, double timeStep) {
 			|| bullets[i].getY() > GlobalResource::MAIN_AREA_HEIGHT
 			|| bullets[i].getX()  > GlobalResource::MAIN_AREA_WIDTH) {
 			
-			bullets.erase(bullets.begin() + i);
+			deleteBullet(i);
 		}
 	}
 
@@ -58,6 +58,14 @@ bool EnemyBullet::isCollision(double centerX, double centerY, int radius) {
 
 vector<Bullet> EnemyBullet::getBullets() {
 	return bullets;
+}
+
+void EnemyBullet::deleteBullet (int index) {
+	bullets.erase(bullets.begin() + index);
+}
+
+void EnemyBullet::clear() {
+	bullets.clear();
 }
 
 

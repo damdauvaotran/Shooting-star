@@ -45,6 +45,7 @@ public:
 	vector<Bullet> getBullets();
 	double getX();
 	double getY();
+	void setDefaultPlace();
 private:
 	
 	TextureAPI characterTexture;
