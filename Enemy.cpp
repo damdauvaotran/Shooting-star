@@ -67,3 +67,13 @@ void Enemy::setAngle(double angle) {
 double Enemy::getAngle() {
 	return angle;
 }
+
+bool Enemy::isCollision(double centerX, double centerY, int radius) {
+	double d = (centerX - (mPosX + ENEMY_RADIUS))*(centerX - (mPosX + ENEMY_RADIUS)) + (centerY - (mPosY + ENEMY_RADIUS))*(centerY - (mPosY + ENEMY_RADIUS));
+	if (d > (ENEMY_RADIUS + radius)*(ENEMY_RADIUS + radius)) {
+		return false;
+	}
+	else {
+		return true;
+	}
+}

@@ -6,7 +6,7 @@ class Enemies {
 public:
 	Enemies();
 	~Enemies();
-	vector <Enemy> enemies;
+	
 
 	void loadFromFile(SDL_Renderer *renderer, string path);
 	void render(SDL_Renderer *renderer);
@@ -15,9 +15,10 @@ public:
 	void moveEnemy(double stepTime);
 	vector<Enemy> getEnemy ();
 	void deleteEnemy(int index);
+	bool isCollision(double centerX, double centerY, int radius);
 private:
 
-	
+	vector <Enemy> enemies;
 	TextureAPI enemyTexture; 
 };
 

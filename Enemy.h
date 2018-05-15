@@ -47,7 +47,7 @@ public:
 	double getY();
 	void setAngle(double angle);
 	double getAngle();
-	
+	bool isCollision(double centerX, double centerY, int radius);
 	
 
 private:
@@ -61,6 +61,7 @@ private:
 	int velocity;
 	double angle;
 
+	int ENEMY_RADIUS = 25;
 
 
 	

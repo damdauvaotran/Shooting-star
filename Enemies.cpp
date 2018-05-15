@@ -49,3 +49,12 @@ vector<Enemy> Enemies::getEnemy() {
 void Enemies::deleteEnemy(int index) {
 	enemies.erase(enemies.begin() + index);
 }
+
+bool Enemies::isCollision(double centerX, double centerY, int radius) {
+	for (Enemy enemy : enemies) {
+		if (enemy.isCollision(centerX, centerY, radius)) {
+			return true;
+		}
+	}
+	return false;
+}

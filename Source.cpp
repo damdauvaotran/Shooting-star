@@ -118,6 +118,8 @@ int main(int argc, char* argv[]) {
 	//load font
 	TTF_Font *gugi;
 	gugi = TTF_OpenFont("Resource/Font/Gugi.ttf",40);
+	TTF_Font *gugi20;
+	gugi20 = TTF_OpenFont("Resource/Font/Gugi.ttf", 20);
 
 	//Score texture
 	TextureAPI highScoreTexture;
@@ -128,7 +130,14 @@ int main(int argc, char* argv[]) {
 	
 	//Game over texture
 	TextureAPI gameOverTexture;
+	stringstream gameOverText;
+	gameOverText.str("GAME OVER");
+	gameOverTexture.loadFromRenderedText(renderer, gameOverText.str(), { 255,255,255,255 }, gugi);
 
+	TextureAPI restartTexture;
+	stringstream restartText;
+	restartText.str("Press R to restart");
+	restartTexture.loadFromRenderedText(renderer, restartText.str(), { 255,255,255,255 }, gugi20);
 
 	/*Main loop*/
 
@@ -141,8 +150,9 @@ int main(int argc, char* argv[]) {
 	stringstream scoreText;
 	stringstream highScoreText;
 	stringstream fpsText;
-	stringstream gameOverText;
-	gameOverText.str("GAME OVER");
+
+
+	
 
 	ofstream highScoreFileOutput;
 	
@@ -177,116 +187,121 @@ int main(int argc, char* argv[]) {
 			if (e.type == SDL_QUIT) {
 				quit = true;
 			}
-			if (!isGameOver) {
-				mainCharacter.handleEvent(e);
-			}
+			
+			mainCharacter.handleEvent(e);
+			
 
 		}
 
 		//Computing somthing
-		
+
 
 		// Collision
-		if (enemyBullets.isCollision(mainCharacter.getX()+22, mainCharacter.getY()+36, 4)) {
+		if (enemyBullets.isCollision(mainCharacter.getX() + 22, mainCharacter.getY() + 36, 4)) {
 			isGameOver = true;
-			quit = true;
-
+			Mix_HaltMusic();
+		}
+		if (enemies.isCollision(mainCharacter.getX() + 22, mainCharacter.getY() + 36, 4)) {
+			isGameOver = true;
 		}
 
-		for (int i = 0; i < enemies.getEnemy().size(); i++) {
-			Enemy thisEnemy = enemies.getEnemy()[i];
-			if (charBullet.isCollision(thisEnemy.getX() + 24, thisEnemy.getY() + 24, 24)) {
-				score += 100;
-				enemies.deleteEnemy(i);
-			}
-		}
-
-
-		
-
-
-		if (characterShootTimer.getTicks() > 100) {
-			mainCharacter.createBullet(charBullet);
-			characterShootTimer.start();//reset Timer
-
-		}
-
-		mainCharacter.moveBullets(frameTimer.getTicks() / 1000.0);
-
-
-		// Score
-		if (score > highScore) {
-			highScore = score;
-			highScoreFileOutput.open("Resource/highscore.txt");
-			highScoreFileOutput << highScore;
-			highScoreFileOutput.close();
-			
-		}
-		highScoreText.str("");
-		highScoreText << "High score: " << highScore;
-		highScoreTexture.loadFromRenderedText(renderer, highScoreText.str(), { 255,255,255,255 }, gugi);
-		scoreText.str("");
-		scoreText << "Your score: " << score;
-		scoreTexture.loadFromRenderedText(renderer, scoreText.str(), {255,255,255,255},gugi );
-
-		//Create enemy
-		if (gameTimer.getTicks() > 300) {
-			stage = 1;
-		}
-		if (stage == 1) {
-			if (createEnemyTimer.getTicks() > 1000) {
-				enemies.createEnemy((rand()%8)*50 , 0, 270);
-
-				createEnemyTimer.start();
-
-			}
-		}
-		//Enemy shoot
-
-		if (enemyShootTimer.getTicks() > 1000) {
-			for (int index = 0; index < enemies.enemies.size(); index++) {
-				for (int i = 0; i < level; i++) {
-					double angle = i*(360/level);
-					enemies.getEnemy()[index].createBullet(enemyBullets, 0, 0, angle);
-					
+		if (!isGameOver) {
+			for (int i = 0; i < enemies.getEnemy().size(); i++) {
+				Enemy thisEnemy = enemies.getEnemy()[i];
+				if (charBullet.isCollision(thisEnemy.getX() + 24, thisEnemy.getY() + 24, 24)) {
+					score += 100;
+					enemies.deleteEnemy(i);
 				}
 			}
-			level += 0.5;
-			enemyShootTimer.start();
-		}
-
-
-		//Move
-		mainCharacter.move(frameTimer.getTicks() / 1000.0);
-		enemies.moveEnemy(frameTimer.getTicks() / 1000.0); 
-		enemyBullets.moveBullets(GlobalResource::ENEMY_BULLET_VEL,frameTimer.getTicks() / 1000.0);
-		charBullet.moveBullets(GlobalResource::BULLET_VEL,frameTimer.getTicks() / 1000.0);
 
 
 
-		//FPS
-		fpsText.str("");
-		fpsText << "FPS: " << 1000.0 / frameTimer.getTicks();
-		fpsTexture.loadFromRenderedText(renderer, fpsText.str(), { 255,255,255,255 }, gugi);
+
+
+			if (characterShootTimer.getTicks() > 100) {
+				mainCharacter.createBullet(charBullet);
+				characterShootTimer.start();//reset Timer
+
+			}
+
+			mainCharacter.moveBullets(frameTimer.getTicks() / 1000.0);
+
+
+			// Score
+			if (score > highScore) {
+				highScore = score;
+				highScoreFileOutput.open("Resource/highscore.txt");
+				highScoreFileOutput << highScore;
+				highScoreFileOutput.close();
+
+			}
+			highScoreText.str("");
+			highScoreText << "High score: " << highScore;
+			highScoreTexture.loadFromRenderedText(renderer, highScoreText.str(), { 255,255,255,255 }, gugi);
+			scoreText.str("");
+			scoreText << "Your score: " << score;
+			scoreTexture.loadFromRenderedText(renderer, scoreText.str(), { 255,255,255,255 }, gugi);
+
+			//Create enemy
+			if (gameTimer.getTicks() > 300) {
+				stage = 1;
+			}
+			if (stage == 1) {
+				if (createEnemyTimer.getTicks() > 1000) {
+					enemies.createEnemy((rand() % 8) * 50, 0, 270);
+
+					createEnemyTimer.start();
+
+				}
+			}
+			//Enemy shoot
+
+			if (enemyShootTimer.getTicks() > 1000) {
+				for (int index = 0; index < enemies.getEnemy().size(); index++) {
+					for (int i = 0; i < level; i++) {
+						double angle = i * (360 / level);
+						enemies.getEnemy()[index].createBullet(enemyBullets, 0, 0, angle);
+
+					}
+				}
+				level += 0.5;
+				enemyShootTimer.start();
+			}
+
+
+			//Move
+
+			mainCharacter.move(frameTimer.getTicks() / 1000.0);
+			enemies.moveEnemy(frameTimer.getTicks() / 1000.0);
+			enemyBullets.moveBullets(GlobalResource::ENEMY_BULLET_VEL, frameTimer.getTicks() / 1000.0);
+			charBullet.moveBullets(GlobalResource::BULLET_VEL, frameTimer.getTicks() / 1000.0);
 
 
 
-		frameTimer.start();
+			//FPS
+			fpsText.str("");
+			fpsText << "FPS: " << 1000.0 / frameTimer.getTicks();
+			fpsTexture.loadFromRenderedText(renderer, fpsText.str(), { 255,255,255,255 }, gugi);
 
 
-		//Play music
-		if (Mix_PlayingMusic() == 0) {
-			//Play the music
-			Mix_PlayMusic(backgroundMusic, -1);
-		}
 
-		//Scroll screen
-		if (scrollingTimer.getTicks() > 16) {
-			scrollingOffset++;
-			scrollingTimer.start(); //Reset the timer
-		}
-		if (scrollingOffset > background.getHeight()) {
-			scrollingOffset = 0;
+			frameTimer.start();
+
+
+			//Play music
+			if (Mix_PlayingMusic() == 0) {
+				//Play the music
+				Mix_PlayMusic(backgroundMusic, -1);
+			}
+
+			//Scroll screen
+			if (scrollingTimer.getTicks() > 16) {
+				scrollingOffset++;
+				scrollingTimer.start(); //Reset the timer
+			}
+			if (scrollingOffset > background.getHeight()) {
+				scrollingOffset = 0;
+			}
 		}
 
 		//Clear screen
@@ -304,6 +319,10 @@ int main(int argc, char* argv[]) {
 		fpsTexture.render(renderer, 410, 30);
 		highScoreTexture.render(renderer, 410, 350);
 		scoreTexture.render(renderer, 410, 400);
+		if (isGameOver) {
+			gameOverTexture.render(renderer, 90, GlobalResource::MAIN_AREA_HEIGHT/2);
+			restartTexture.render(renderer, 90, GlobalResource::MAIN_AREA_HEIGHT / 2 + 50);
+		}
 		
 		
 
