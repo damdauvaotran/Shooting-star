@@ -47,6 +47,8 @@ public:
 	double getY();
 	void setAngle(double angle);
 	double getAngle();
+	int getHp();
+	void setHp(int hp);
 	bool isCollision(double centerX, double centerY, int radius);
 	
 
@@ -54,10 +56,11 @@ private:
 	TextureAPI enemyTexture;
 	TextureAPI bulletTexture;
 
-	//The X and Y offsets of the dot
+
 	double mPosX, mPosY;
 
-	//The velocity of the dot
+	int hp;
+
 	int velocity;
 	double angle;
 

@@ -31,9 +31,9 @@ void EnemyBullet::moveBullets(double vel, double timeStep) {
 		bullets[i].setY(bullets[i].getY() - vel*sin(angle)* timeStep);
 
 
-		if (bullets[i].getY() + GlobalResource::BULLET_HEIGHT < 0
+		if (bullets[i].getY() + GlobalResource::ENEMY_HEIGHT < 0
 			|| bullets[i].getX() + GlobalResource::BULLET_WIDTH <0
-			|| bullets[i].getY() > GlobalResource::MAIN_AREA_HEIGHT
+			|| bullets[i].getY() > GlobalResource::MAIN_AREA_HEIGHT+GlobalResource::ENEMY_HEIGHT
 			|| bullets[i].getX()  > GlobalResource::MAIN_AREA_WIDTH) {
 			
 			deleteBullet(i);
@@ -42,8 +42,8 @@ void EnemyBullet::moveBullets(double vel, double timeStep) {
 
 }
 
-void EnemyBullet::createBullet(double mPosX, double x, double mPosY, double y, double angle) {
-	Bullet newBullet = Bullet(bulletTexture, mPosX + x , mPosY -y , angle);
+void EnemyBullet::createBullet(double mPosX, double x, double mPosY, double y,int vel,double angle) {
+	Bullet newBullet = Bullet(bulletTexture, mPosX + x , mPosY -y ,vel, angle);
 	bullets.push_back(newBullet);
 }
 

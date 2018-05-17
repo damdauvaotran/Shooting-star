@@ -10,7 +10,7 @@ public:
 
 	void loadFromFile(SDL_Renderer *renderer, string path);
 	void render(SDL_Renderer *renderer);
-	void createEnemy( double x,double y, double angle);
+	void createEnemy( double x,double y,int vel, double angle);
 
 	void moveEnemy(double stepTime);
 	vector<Enemy> getEnemies ();

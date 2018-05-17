@@ -131,7 +131,7 @@ void Character::moveBullets(double timeStep) {
 
 
 void Character::createBullet(EnemyBullet &bullets, double angle) {
-	bullets.createBullet(mPosX+ 14, 0, mPosY-5, 0, angle);
+	bullets.createBullet(mPosX+ 14, 0, mPosY-5, 0, GlobalResource::BULLET_VEL, angle);
 }
 
 double Character::getX() {
@@ -148,4 +148,12 @@ vector<Bullet> Character::getBullets() {
 void Character::setDefaultPlace() {
 	mPosX = (400 - CHARACTER_WIDTH) / 2;
 	mPosY = GlobalResource::SCREEN_HEIGHT - CHARACTER_HEIGHT;
+}
+
+
+int Character::getHp() {
+	return this->hp;
+}
+void Character::setHp(int hp) {
+	this->hp = hp;
 }

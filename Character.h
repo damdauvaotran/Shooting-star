@@ -45,6 +45,9 @@ public:
 	vector<Bullet> getBullets();
 	double getX();
 	double getY();
+	int getHp();
+	void setHp(int hp);
+
 	void setDefaultPlace();
 private:
 	

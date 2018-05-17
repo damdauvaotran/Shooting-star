@@ -2,7 +2,7 @@
 
 
 
-Bullet::Bullet(TextureAPI bulletTexture, double x, double y, double angle) {
+Bullet::Bullet(TextureAPI bulletTexture, double x, double y, int vel, double angle) {
 	this->bulletTexture = bulletTexture;
 	mPosX = x;
 	mPosY = y;
@@ -19,6 +19,8 @@ Bullet::~Bullet() {
 void Bullet::render(SDL_Renderer *renderer, double angle ) {
 	bulletTexture.render(renderer, mPosX, mPosY, NULL, angle);
 }
+
+
 
 void Bullet::free() {
 	bulletTexture.free();

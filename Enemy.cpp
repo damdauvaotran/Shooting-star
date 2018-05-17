@@ -7,6 +7,7 @@ Enemy::Enemy(TextureAPI enemyTexture, double x, double y, int vel,double _angle)
 	mPosY = y;
 	velocity = vel;
 	angle = _angle;
+	hp = 1;
 	this->enemyTexture = enemyTexture;
 }
 
@@ -15,17 +16,15 @@ Enemy::Enemy(TextureAPI enemyTexture, double x, double y, int vel,double _angle)
 
 
 
-void Enemy::loadFromFile(SDL_Renderer *renderer) {
-	
-
-}
 
 void Enemy::handleEvent(SDL_Event& e){
 
 }
 
 void Enemy::move(double timeStep) {
-	
+	mPosX +=  velocity * timeStep*cos(angle*M_PI / 180);
+	mPosY -= velocity * timeStep*sin(angle*M_PI / 180);
+
 	
 }
 
@@ -45,7 +44,7 @@ void Enemy::free() {
 
 
 void Enemy::createBullet(EnemyBullet &bullets, double x, double y, double angle) {
-	bullets.createBullet(mPosX+24, x, mPosY+24, y, angle);
+	bullets.createBullet(mPosX+24, x, mPosY+24, y,GlobalResource::ENEMY_BULLET_VEL, angle);
 }
 
 void Enemy::setX(double x) {
@@ -76,4 +75,11 @@ bool Enemy::isCollision(double centerX, double centerY, int radius) {
 	else {
 		return true;
 	}
+}
+
+int Enemy::getHp() {
+	return this->hp;
+}
+void Enemy::setHp(int hp) {
+	this->hp = hp;
 }
