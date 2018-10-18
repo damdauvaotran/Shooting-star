@@ -1,0 +1,208 @@
+
+//initialize
+Khỏi tạo SDL:   if( SDL_Init( SDL_INIT_VIDEO ) < 0 ){
+		             printf( "SDL could not initialize! SDL Error: %s\n", SDL_GetError() );
+            	}       
+Set texture  filter to linear:  if( !SDL_SetHint( SDL_HINT_RENDER_SCALE_QUALITY, "1" ) ){
+		                    	    cout<<"Warning: Linear texture filtering not enabled!" ;
+	                         	}
+Tạo cửa sổ: gWindow = SDL_CreateWindow( "Nguyendepzai", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
+Tạo renderer ứng với cửa sổ: gRenderer = SDL_CreateRenderer( gWindow, -1, SDL_RENDERER_ACCELERATED );
+Khởi tạo PNG:
+			int imgFlags = IMG_INIT_PNG;
+            if( !( IMG_Init( imgFlags ) & imgFlags ) ){
+				cout<< "SDL_image could not initialize! SDL_image Error: \n"<< IMG_GetError() ;
+			}
+Khởi tạo ttf
+			 if( TTF_Init() == -1 ) { 
+				cout<<"SDL_ttf could not initialize! SDL_ttf Error: \n"<< TTF_GetError() ;
+			}
+
+Khởi tạo Mixer
+	if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 4096 ) < 0 ) { 
+		cout<< "\nSDL_mixer could not initialize!"<< Mix_GetError() 
+	}
+
+
+
+##Code ăn liền khởi tạo everything 
+	if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
+		cout << SDL_GetError();
+	}else {
+		if (!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1")) {
+			cout << "\nWarning: Linear texture filtering not enabled!";
+		}else {
+			window = SDL_CreateWindow("nam dep trai", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);//Create window
+			if (window == NULL) {
+				cout << "\nCould no init window "<<SDL_GetError();
+			}else {
+				renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+				if (renderer == NULL) {
+					cout << SDL_GetError();
+				} else {
+					SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+					int imgFlags = IMG_INIT_PNG;
+					if (!(IMG_Init(imgFlags) & imgFlags))
+					{
+						cout<<"\nSDL_image could not initialize! SDL_image Error: "<< IMG_GetError();
+					}
+
+					if (TTF_Init() == -1) {
+						cout << "\nSDL_ttf could not initialize! SDL_ttf Error: " << TTF_GetError();
+					}
+
+					if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 4096 ) < 0 ) { 
+						cout<< "\nSDL_mixer could not initialize!"<< Mix_GetError() ;
+					}
+
+				}
+			}
+		}
+	}
+
+
+##Các kiểu dữ liệu
+
+SDL_Window*
+SDL_Surface *// Không dùng đâu
+SDL_Texture *
+SDL_Renderer*
+SDL_Point*
+Mix_Music*
+Mix_Chunk*c
+SDL_Rect 
+SDL_RedererFlip
+SDL_Event
+SDL_Color
+
+
+
+##Load Resource
+Chọn màu cho renderer: SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
+SDL_SetTextureColorMod(mTexture, red, green, blue)
+
+//How to load texture
+{
+SDL_Surface* loadedSurface = IMG_Load( path.c_str() );
+newTexture = SDL_CreateTextureFromSurface( gRenderer, loadedSurface );
+SDL_FreeSurface( loadedSurface );
+
+}
+
+//Color key 
+SDL_SetColorKey(newSurface, 1, SDL_MapRGB(newSurface->format, 0, 255, 255));
+
+//Load chữ 
+SDL_Surface* textSurface = TTF_RenderText_Solid(gFont, textureText.c_str(), textColor);
+newTexture = SDL_CreateTextureFromSurface( gRenderer, textSurface );
+SDL_FreeSurface(textSurface);
+
+//Load nhac
+Mix_Music *gMusic = Mix_LoadMUS( "21_sound_effects_and_music/hope.mp3" );
+Mix_Chunk *gChunk = Mix_LoadWAV( "21_sound_effects_and_music/high.wav" )
+
+
+//Chèn màu vào texture sẵn có(Không hữu dụng lắm)
+SDL_SetTextureColorMod( mTexture, red, green, blue );
+
+Sự kiện SDL 
+while (SDL_PollEvent(&e) != 0) {
+	if (e.type == SDL_QUIT) {
+		quit = true;
+	}
+}
+//Nhận key
+if (e.type == SDL_KEYDOWN)
+e.key.keysym.sym == SDLK_UP
+const Uint8* currentKeyStates = SDL_GetKeyboardState( NULL );//Mảng key state
+
+//How about chuột 
+e->type == SDL_MOUSEMOTION ||->type == SDL_MOUSEBUTTONDOWN || e->type == SDL_MOUSEBUTTONUP
+SDL_GetMouseState(&x, &y);//Lấy vị trí chuột
+//Chuột có chạm nút Không
+	if (x < position.x) {
+			inside = false;
+		}
+		//Mouse is right of the button
+		else if (x > position.x + BUTTON_WIDTH) {
+			inside = false;
+		}
+		//Mouse above the button
+		else if (y < position.y) {
+			inside = false;
+		}
+		//Mouse below the button
+		else if (y > position.y + BUTTON_HEIGHT) {
+			inside = false;
+		}
+
+
+//Clear màn hình
+	SDL_SetRenderDrawColor( renderer, 0xFF, 0xFF, 0xFF, 0xFF );
+	SDL_RenderClear( renderer );
+
+//Các hàm vẽ đích thực 
+SDL_RenderCopy( gRenderer, gTexture, NULL, NULL ); //Hàm chất lượng cao dùng để vẽ texture, Thay đổi thông số null để dùng sprite
+SDL_RenderCopyEx( gRenderer, mTexture, clip, &renderQuad, angle, center, flip ) //Hàm chất hơn, truyền vào được góc.
+SDL_RenderFillRect( gRenderer, &fillRect )
+SDL_RenderDrawRect( gRenderer, &outlineRect );
+SDL_RenderDrawLine( gRenderer, 0, SCREEN_HEIGHT / 2, SCREEN_WIDTH, SCREEN_HEIGHT / 2 );
+SDL_RenderDrawPoint( gRenderer, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 )
+
+//Cập nhật thay đổi 
+ SDL_RenderPresent( gRenderer );
+
+//Các hàm chơi nhạc đích thực
+Chơi một âm Mix_PlayChannel( -1, gHigh, 0 );
+Chơi nhạc dài 
+
+//If there is no music playing 
+if( Mix_PlayingMusic() == 0 ) {
+	 //Play the music
+	  	Mix_PlayMusic( gMusic, -1 );
+} //If music is being played 
+else {
+	 //If the music is paused 
+	 if( Mix_PausedMusic() == 1 ) {
+		  	//Resume the music 
+			Mix_ResumeMusic(); 
+	} //If the music is playing 
+	else { 
+		//Pause the music
+		 Mix_PauseMusic(); 
+	}
+}
+
+//Ngắt nhạc
+Mix_HaltMusic();
+
+//Xử lí thời gian
+Lấy ra thời gian hiện tại : SDL_GetTick();
+
+
+
+
+
+//Close and free 
+Destroy
+    SDL_DestroyTexture( gTexture );
+	SDL_DestroyRenderer( gRenderer );
+	SDL_DestroyWindow( gWindow );
+	gWindow = NULL;
+	gRenderer = NULL;
+    gTexture = NULL;
+Free music
+	Mix_FreeChunk( gScratch );
+	gScratch = NULL;
+
+	Mix_FreeMusic( gMusic );
+	gMusic = NULL;
+
+Quit SDL SubSystem
+	Mix_Quit();
+	TTF_Quit();
+	IMG_Quit();
+	SDL_Quit();
+
+
+    

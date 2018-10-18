@@ -354,7 +354,7 @@ int main(int argc, char* argv[]) {
 
 
 				//Character shoot
-				if (characterShootTimer.getTicks() > 400) {
+				if (characterShootTimer.getTicks() > 200) {
 					mainCharacter.createBullet(charBullet);
 					characterShootTimer.start();//reset Timer
 
@@ -401,6 +401,7 @@ int main(int argc, char* argv[]) {
 						}
 					}
 					level += 0.5;
+					bulletCounter++;
 					enemyShootTimer.start();
 				}
 
@@ -425,7 +426,7 @@ int main(int argc, char* argv[]) {
 
 
 				//Play music
-				if (Mix_PlayingMusic() == 0) {
+				if (Mix_PlayingMusic() == 0&& isInGame) {
 					//Play the music
 					Mix_PlayMusic(backgroundMusic, -1);
 				}
