@@ -1,6 +1,6 @@
 #pragma once
 #include "Enemy.h"
-#include <SDL.h>
+#include <SDL2/SDL.h>  
 
 class Enemies {
 public:
